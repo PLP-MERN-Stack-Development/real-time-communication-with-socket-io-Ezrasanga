@@ -1,6 +1,11 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const path = require('path');
+const fs = require('fs');
+// multer for multipart uploads (Option B)
+let multer;
+try { multer = require('multer'); } catch (e) { multer = null; }
 const cors = require("cors");
 
 const app = express();
@@ -81,12 +86,15 @@ function listRooms() {
   }));
 }
 
-// stub token verification (replace with real Clerk verification in production)
-function verifyTokenStub(token) {
-  if (!token) return null;
-  const userId = String(token).slice(0, 8);
-  const userName = `user-${userId}`;
-  return { userId, userName };
+// Replace token verification with Clerk-aware socket handshake middleware
+// We reuse the socketAuth from `middleware/clerkAuth.js` which attempts flexible
+// verification via the installed @clerk/clerk-sdk-node or falls back to dev bypass when appropriate.
+let socketAuthMiddleware = null;
+try {
+  const clerkAuth = require('./middleware/clerkAuth');
+  socketAuthMiddleware = clerkAuth.socketAuth;
+} catch (err) {
+  socketAuthMiddleware = null;
 }
 
 // HTTP endpoints for debugging / quick UI use
@@ -104,6 +112,51 @@ app.post("/rooms", (req, res) => {
   io && io.emit && io.emit("rooms", listRooms());
   return res.json({ ok: true, room: ROOMS.get(name) });
 });
+
+// Option B: multipart file upload endpoint (uses multer). If multer is not installed,
+// this route will return an instructive error. To enable run: `npm install multer` in server folder.
+const UPLOAD_DIR = path.join(__dirname, 'uploads');
+try { fs.mkdirSync(UPLOAD_DIR, { recursive: true }); } catch (e) {}
+if (multer) {
+  const MAX_UPLOAD_BYTES = parseInt(process.env.MAX_UPLOAD_BYTES || String(10 * 1024 * 1024), 10); // default 10MB
+  const ALLOWED_MIMES = (process.env.ALLOWED_MIMES || 'image/jpeg,image/png,image/gif,application/pdf,text/plain,application/zip,audio/mpeg,video/mp4').split(',');
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, UPLOAD_DIR),
+    filename: (req, file, cb) => {
+      const safe = `${Date.now()}-${Math.random().toString(36).slice(2,8)}-${file.originalname.replace(/[^a-zA-Z0-9.\-_]/g,'')}`;
+      cb(null, safe);
+    }
+  });
+
+  const upload = multer({
+    storage,
+    limits: { fileSize: MAX_UPLOAD_BYTES },
+    fileFilter: (req, file, cb) => {
+      if (!file || !file.mimetype) return cb(new Error('invalid_file'));
+      if (ALLOWED_MIMES.includes(file.mimetype)) return cb(null, true);
+      return cb(new Error('invalid_mime'));
+    }
+  });
+
+  app.post('/upload', upload.single('file'), (req, res) => {
+    try {
+      if (!req.file) return res.status(400).json({ ok: false, error: 'file required' });
+      const url = `/uploads/${req.file.filename}`;
+      return res.json({ ok: true, url, mime: req.file.mimetype, size: req.file.size, name: req.file.originalname });
+    } catch (err) {
+      console.error('[http] /upload error', err);
+      // Multer errors provide code/message
+      if (err && err.code === 'LIMIT_FILE_SIZE') return res.status(413).json({ ok: false, error: 'file_too_large', max: MAX_UPLOAD_BYTES });
+      if (err && err.message === 'invalid_mime') return res.status(415).json({ ok: false, error: 'invalid_mime' });
+      return res.status(500).json({ ok: false, error: 'server_error' });
+    }
+  });
+  // serve uploads
+  app.use('/uploads', express.static(UPLOAD_DIR));
+} else {
+  app.post('/upload', (req, res) => res.status(501).json({ ok: false, error: 'multer_missing', message: 'Install multer in server to enable uploads: npm install multer' }));
+}
 
 // --- Add: message search endpoint ---
 // GET /messages/search?q=term&room=roomName&limit=100
@@ -150,6 +203,37 @@ const io = new Server(server, {
   path: "/socket.io",
 });
 
+// Attach Clerk socketAuth middleware (if available) AFTER io is instantiated
+// Enforce authentication: reject any socket that does not produce a clerkUser
+if (socketAuthMiddleware) {
+  io.use(async (socket, next) => {
+    try {
+      // The middleware may attach socket.clerkUser when verification succeeds
+      await socketAuthMiddleware(socket, next);
+      // Enforce presence of clerkUser (block anonymous connections)
+      if (!socket.clerkUser && !socket.clerk) {
+        const err = new Error('Authentication required');
+        err.data = { reason: 'missing_token_or_invalid' };
+        return next(err);
+      }
+      return next();
+    } catch (e) {
+      return next(e);
+    }
+  });
+} else {
+  // If middleware not present, we still enforce that clients present a token in handshake.auth
+  io.use((socket, next) => {
+    const token = socket.handshake.auth?.token || (socket.handshake.headers?.authorization || '').replace('Bearer ', '');
+    if (!token) {
+      const err = new Error('Authentication required');
+      err.data = { reason: 'missing_token' };
+      return next(err);
+    }
+    return next();
+  });
+}
+
 // safe handler helper
 function safeHandler(fn, eventName) {
   return (...args) => {
@@ -172,9 +256,15 @@ function broadcastUsers() {
 			id,
 			name: info.userName,
 			online: info.sockets.size > 0,
+			socketCount: info.sockets.size,
 		}));
+		const count = users.filter(u => u.online).length;
+
+		// Helpful debug log: shows canonical users shape and count
+		console.info("[server] broadcastUsers -> count:", count, "users:", users);
+
 		io.emit("users", users);
-		io.emit("users_count", users.filter(u => u.online).length);
+		io.emit("users_count", count);
 	} catch (err) {
 		console.error("[server] broadcastUsers error", err);
 	}
@@ -183,16 +273,16 @@ function broadcastUsers() {
 
 io.on("connection", (socket) => {
   console.info("[socket] connection handshake.auth:", socket.handshake.auth);
-
-  // prefer handshake user info if provided, otherwise verify token
+  // Prefer Clerk-authenticated user attached by `socketAuth` middleware, otherwise
+  // fall back to handshake-provided info or anon id.
+  const clerkUser = socket.clerkUser || socket.clerk || null;
   const token = socket.handshake.auth?.token;
   const handshakeUserId = socket.handshake.auth?.userId;
   const handshakeUserName = socket.handshake.auth?.userName;
 
-  const verified = verifyTokenStub(token); // replace with real verification if available
-  const userId = handshakeUserId || (verified && verified.userId) || `anon-${socket.id.slice(0,6)}`;
-  const userName = handshakeUserName || (verified && verified.userName) || "Anonymous";
-  const user = { userId, userName };
+  const userId = (clerkUser && (clerkUser.id || clerkUser.userId)) || handshakeUserId || `anon-${socket.id.slice(0,6)}`;
+  const userName = (clerkUser && (clerkUser.username || clerkUser.email || clerkUser.name)) || handshakeUserName || "Anonymous";
+  const user = { userId, userName, clerk: clerkUser };
 
   // register user -> ensure single USERS_BY_ID entry per userId
   if (!USERS_BY_ID.has(userId)) {
@@ -315,6 +405,7 @@ io.on("connection", (socket) => {
       senderId: userId,
       senderName: userName,
       text: payload.text,
+      file: payload.file || undefined,
       timestamp: Date.now(),
       private: payload.private || false,
     };
@@ -349,6 +440,59 @@ io.on("connection", (socket) => {
     if (typeof ack === "function") ack({ ok: true, id: msg.id });
   }, "private_message"));
 
+  // typing indicator
+  socket.on("typing", safeHandler(({ room, isTyping }, ack) => {
+    try {
+      const r = (room || GLOBAL_ROOM).toString();
+      socket.to(r).emit("typing", { userId, userName, isTyping });
+      if (typeof ack === "function") ack({ ok: true });
+    } catch (err) {
+      console.error("[socket] typing handler error", err);
+      if (typeof ack === "function") ack({ ok: false, error: "server_error" });
+    }
+  }, "typing"));
+
+  // message reaction
+  socket.on("react", safeHandler(({ messageId, reaction }, ack) => {
+    try {
+      const m = MESSAGES.find((mm) => mm.id === messageId);
+      if (!m) return ack && ack({ ok: false, error: "message not found" });
+      if (!m.reactions) m.reactions = {};
+      m.reactions[reaction] = (m.reactions[reaction] || 0) + 1;
+      const room = m.room || GLOBAL_ROOM;
+      io.to(room).emit("reaction", { messageId: m.id, reaction, count: m.reactions[reaction], userId });
+      if (typeof ack === "function") ack({ ok: true });
+    } catch (err) {
+      console.error("[socket] react handler error", err);
+      if (typeof ack === "function") ack({ ok: false, error: "server_error" });
+    }
+  }, "react"));
+
+  // file/image message (base64 payload accepted for demo)
+  socket.on("file_message", safeHandler(({ room, name, data, mime }, ack) => {
+    try {
+      const msg = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+        room: (room || GLOBAL_ROOM),
+        senderId: userId,
+        senderName: userName,
+        file: { name, data, mime },
+        timestamp: Date.now(),
+        private: false,
+      };
+      MESSAGES.push(msg);
+      if (ROOMS.has(msg.room)) {
+        ROOMS.get(msg.room).messages.push(msg);
+        if (ROOMS.get(msg.room).messages.length > 2000) ROOMS.get(msg.room).messages.shift();
+      }
+      io.to(msg.room).emit("file_message", msg);
+      if (typeof ack === "function") ack({ ok: true, id: msg.id });
+    } catch (err) {
+      console.error("[socket] file_message handler error", err);
+      if (typeof ack === "function") ack({ ok: false, error: "server_error" });
+    }
+  }, "file_message"));
+
   // --- Add: mark_read socket handler to implement read receipts ---
   socket.on("mark_read", safeHandler(({ messageId }, ack) => {
     try {
@@ -357,7 +501,7 @@ io.on("connection", (socket) => {
       if (!m) return ack && ack({ ok: false, error: "message not found" });
 
       // only push once
-      const readerId = user.userId;
+      const readerId = userId;
       if (!m.readBy) m.readBy = [];
       if (!m.readBy.includes(readerId)) {
         m.readBy.push(readerId);
@@ -368,7 +512,7 @@ io.on("connection", (socket) => {
       io.to(room).emit("message_read", { messageId: m.id, userId: readerId });
       // also notify the original sender's sockets (if known)
       const senderEntry = USERS_BY_ID.get(m.senderId);
-      if senderEntry) {
+      if (senderEntry) {
         senderEntry.sockets.forEach((sid) => io.to(sid).emit("message_read", { messageId: m.id, userId: readerId }));
       }
 
@@ -379,75 +523,33 @@ io.on("connection", (socket) => {
     }
   }, "mark_read"));
 
-  // Add: helper to broadcast canonical users list
-  function broadcastUsers() {
-    try {
-      const users = Array.from(USERS_BY_ID.entries()).map(([id, info]) => ({
-        id,
-        name: info.userName,
-        online: info.sockets.size > 0,
-      }));
-      // emit both structured list and authoritative count
-      io.emit("users", users);
-      io.emit("users_count", users.filter(u => u.online).length);
-    } catch (err) {
-      console.error("[server] broadcastUsers error", err);
-    }
-  }
-
-  // Add: client announces username -> register socket under a canonical user entry and broadcast
-  socket.on("join", safeHandler(({ username }, ack) => {
-    try {
-      const uname = (username || "Anonymous").toString().trim();
-      // prefer stable userId sent in handshake.auth, otherwise create per-socket anon id
-      const handshakeId = socket.handshake?.auth?.userId;
-      const canonicalId = handshakeId || `anon-${socket.id.slice(0, 6)}`;
-
-      // ensure USERS_BY_ID entry exists
-      if (!USERS_BY_ID.has(canonicalId)) {
-        USERS_BY_ID.set(canonicalId, { userName: uname, sockets: new Set() });
-      } else {
-        const existing = USERS_BY_ID.get(canonicalId);
-        if (existing.userName !== uname) existing.userName = uname;
-      }
-
-      // attach this socket id
-      USERS_BY_ID.get(canonicalId).sockets.add(socket.id);
-      ONLINE.set(socket.id, { userId: canonicalId, userName: uname });
-
-      console.info("[server] join:", socket.id, "as", uname, "canonicalId:", canonicalId);
-      broadcastUsers();
-
-      if (typeof ack === "function") ack({ ok: true, id: canonicalId, name: uname });
-    } catch (err) {
-      console.error("[server] join handler error", err);
-      if (typeof ack === "function") ack({ ok: false, error: "server_error" });
-    }
-  }, "join"));
-
   // --- existing handlers follow (create_room, rooms_request, join_room, message, private_message, etc.) ---
+
+  // NOTE: reuse the top-level `broadcastUsers` declared above (canonical shape + count)
+
+  // -- cleanup on disconnect
   socket.on("disconnect", () => {
     try {
       ONLINE.delete(socket.id);
       // remove socket from USERS_BY_ID sets
-      for (const [userId, info] of USERS_BY_ID.entries()) {
+      for (const [uid, info] of USERS_BY_ID.entries()) {
         if (info.sockets.has(socket.id)) {
           info.sockets.delete(socket.id);
           if (info.sockets.size === 0) {
-            USERS_BY_ID.delete(userId);
-            io.emit("notification", { type: "user_leave", user: { id: userId, name: info.userName } });
+            USERS_BY_ID.delete(uid);
+            io.emit("notification", { type: "user_leave", user: { id: uid, name: info.userName } });
           }
         }
       }
       // broadcast updated users list
       broadcastUsers();
     } catch (err) {
-      console.error("[socket] disconnect cleanup error:", err);
+      console.error("[socket] disconnect handler error", err);
     }
   });
+
 });
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Socket.IO server running on port ${PORT}`);
-});
+// start server
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.info(`[server] listening on ${PORT}`));

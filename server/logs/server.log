@@ -1,0 +1,106 @@
+[2025-11-16T16:34:53.507Z] New client connected: 1WFVJR2fmFIDNQOFAAAB
+[2025-11-16T16:35:29.792Z] New client connected: jh5uSBJRvSDgxdpsAAAD
+[2025-11-16T16:35:29.858Z] [join] socket:jh5uSBJRvSDgxdpsAAAD joined room:global as:John Paul
+[2025-11-16T16:35:55.578Z] New client connected: Mts9qPXEaDfCTiEkAAAF
+[2025-11-16T16:35:55.632Z] [join] socket:Mts9qPXEaDfCTiEkAAAF joined room:global as:John Paul
+[2025-11-16T16:36:02.066Z] New client connected: F5aOLOX-vMXVIwfdAAAH
+[2025-11-16T16:36:02.121Z] [join] socket:F5aOLOX-vMXVIwfdAAAH joined room:global as:John Paul
+[2025-11-16T16:36:16.243Z] New client connected: AuUuicAYxdOXu97HAAAJ
+[2025-11-16T16:36:16.386Z] [join] socket:AuUuicAYxdOXu97HAAAJ joined room:global as:Ezra Sanga
+[2025-11-16T16:36:49.584Z] [message] room:global from:Ezra Sanga id:6919fda10e38f525ad845f52
+[2025-11-16T16:36:54.957Z] New client connected: kRh3VfLVP5Rr5iivAAAL
+[2025-11-16T16:36:55.027Z] [join] socket:kRh3VfLVP5Rr5iivAAAL joined room:global as:Ezra Sanga
+[2025-11-16T16:37:05.439Z] New client connected: XKoEVKuQKkhrn4QAAAAN
+[2025-11-16T16:37:05.483Z] [join] socket:XKoEVKuQKkhrn4QAAAAN joined room:global as:John Paul
+[2025-11-16T16:37:10.933Z] New client connected: r-zH-5nymQ7VhBMQAAAP
+[2025-11-16T16:37:10.984Z] [join] socket:r-zH-5nymQ7VhBMQAAAP joined room:global as:John Paul
+[2025-11-16T18:02:18.395Z] New client connected: RNSilRBSSyu62W_IAAAB
+[2025-11-16T18:02:18.485Z] [join] socket:RNSilRBSSyu62W_IAAAB joined room:global as:John Paul
+[2025-11-16T18:03:34.987Z] New client connected: TU49Qb0ooNimE3VYAAAB
+[2025-11-16T18:04:05.204Z] New client connected: 38YwuPL49SBTE3fHAAAB
+[2025-11-16T18:04:14.218Z] New client connected: IsirnyF56K8lKLEGAAAB
+[2025-11-16T18:05:16.307Z] New client connected: VYdz1DXlF9PYCytsAAAE
+[2025-11-16T18:05:16.317Z] New client connected: BiMyXn6ERMb_zZNdAAAF
+[2025-11-16T18:05:16.340Z] [join] socket:VYdz1DXlF9PYCytsAAAE joined room:global as:Alice
+[2025-11-16T18:05:16.354Z] [join] socket:BiMyXn6ERMb_zZNdAAAF joined room:global as:Bob
+[2025-11-16T18:05:18.515Z] [message] room:testroom from:Alice id:691a125e67a139d54a7cbc71
+[2025-11-16T18:05:21.141Z] [private_message] from:Alice toSocket:BiMyXn6ERMb_zZNdAAAF id:691a126167a139d54a7cbc78
+[2025-11-16T18:13:14.887Z] New client connected: c9nTMoRucZ_E2vIwAAAC
+[2025-11-16T18:13:14.911Z] New client connected: dQsPS3op7WlKC2XhAAAD
+[2025-11-16T18:13:14.934Z] [join] socket:c9nTMoRucZ_E2vIwAAAC joined room:global as:Alice
+[2025-11-16T18:13:14.945Z] [join] socket:dQsPS3op7WlKC2XhAAAD joined room:global as:Bob
+[2025-11-16T18:13:17.082Z] [message] room:testroom from:Alice id:691a143dc9d3ecd139b1e7bd
+[2025-11-16T18:13:19.708Z] [private_message] from:Alice toSocket:dQsPS3op7WlKC2XhAAAD id:691a143fc9d3ecd139b1e7c4
+[2025-11-16T18:13:23.249Z] New client connected: EW6DS5voiqEylQkpAAAF
+[2025-11-16T18:13:23.298Z] [join] socket:EW6DS5voiqEylQkpAAAF joined room:global as:Bob
+[2025-11-16T18:14:53.000Z] New client connected: oSatb9C1LazOlaEQAAAC
+[2025-11-16T18:14:53.020Z] New client connected: oeHuqz9FkRU57uEaAAAD
+[2025-11-16T18:14:53.042Z] [join] socket:oSatb9C1LazOlaEQAAAC joined room:global as:Alice
+[2025-11-16T18:14:53.056Z] [join] socket:oeHuqz9FkRU57uEaAAAD joined room:global as:Bob
+[2025-11-16T18:14:55.207Z] [message] room:testroom from:Alice id:691a149fa216eecb410e8ace
+[2025-11-16T18:14:57.840Z] [private_message] from:Alice toSocket:oeHuqz9FkRU57uEaAAAD id:691a14a1a216eecb410e8ad5
+[2025-11-16T18:15:01.386Z] New client connected: FoSC4tf3GPFvnFmjAAAF
+[2025-11-16T18:15:01.436Z] [join] socket:FoSC4tf3GPFvnFmjAAAF joined room:global as:Bob
+[2025-11-16T18:27:29.546Z] New client connected: uidFHPUIYXO8v-3nAAAH
+[2025-11-16T18:27:29.726Z] [join] socket:uidFHPUIYXO8v-3nAAAH joined room:global as:John Paul
+[2025-11-16T18:28:43.202Z] New client connected: ZrceWm-S6fSS1qwaAAAB
+[2025-11-16T18:30:12.778Z] New client connected: 1xmQYX0zBqUVRbXDAAAB
+[2025-11-16T18:46:09.178Z] New client connected: _OJUx1uxFUtwQXIaAAAD
+[2025-11-16T18:50:30.798Z] New client connected: YJVR-HJWOIVo3pmtAAAF
+[2025-11-16T18:50:30.848Z] [join] socket:YJVR-HJWOIVo3pmtAAAF joined room:global as:John Paul
+[2025-11-16T18:50:38.745Z] New client connected: otIYSECvtPUb_N8xAAAH
+[2025-11-16T18:50:38.793Z] [join] socket:otIYSECvtPUb_N8xAAAH joined room:global as:John Paul
+[2025-11-16T18:52:07.186Z] New client connected: Hw1gJbnCOhrxWVHTAAAJ
+[2025-11-16T18:52:07.351Z] [join] socket:Hw1gJbnCOhrxWVHTAAAJ joined room:global as:Ezra Sanga
+[2025-11-16T19:01:55.661Z] New client connected: pGREK1xFsdRXpu9TAAAL
+[2025-11-16T19:01:55.805Z] [join] socket:pGREK1xFsdRXpu9TAAAL joined room:global as:Ezra Sanga
+[2025-11-16T19:02:23.970Z] [message] room:Ezra from:Ezra Sanga id:691a1fbf9642984bcfd82cbc
+[2025-11-16T19:02:29.999Z] New client connected: qH5LK8Ky2KjbTeUEAAAN
+[2025-11-16T19:02:30.058Z] [join] socket:qH5LK8Ky2KjbTeUEAAAN joined room:global as:Ezra Sanga
+[2025-11-16T19:06:08.185Z] New client connected: xMPOTeHvzTH54FZcAAAC
+[2025-11-16T19:06:08.201Z] New client connected: bHj8Hm1JJ3Vy76g4AAAD
+[2025-11-16T19:06:11.035Z] New client connected: EOuXQEuw58P1swNyAAAC
+[2025-11-16T19:06:11.051Z] New client connected: _KQ7mJnVR4_63zt9AAAD
+[2025-11-16T19:06:48.978Z] New client connected: qrlCG6oFen0sN15GAAAC
+[2025-11-16T19:06:49.018Z] New client connected: CHiK3SbHZ8o2gUUUAAAD
+[2025-11-16T19:08:20.675Z] New client connected: T9i6sdgY3A74eberAAAC
+[2025-11-16T19:08:20.688Z] New client connected: DnZ5ZrFxRqe4ZZJFAAAD
+[2025-11-16T19:11:41.202Z] New client connected: xMbE76W8iUwBA4mNAAAF
+[2025-11-16T19:11:41.252Z] [join] socket:xMbE76W8iUwBA4mNAAAF joined room:global as:Ezra Sanga
+[2025-11-16T19:11:52.931Z] New client connected: KFFctXF3I5PN6ju5AAAH
+[2025-11-16T19:11:52.963Z] [join] socket:KFFctXF3I5PN6ju5AAAH joined room:global as:John Paul
+[2025-11-16T19:12:18.752Z] [message] room:global from:John Paul id:691a221260b7e738873b310e
+[2025-11-16T19:12:23.563Z] New client connected: MK78Q86Lts8JAtBoAAAJ
+[2025-11-16T19:12:23.625Z] [join] socket:MK78Q86Lts8JAtBoAAAJ joined room:global as:John Paul
+[2025-11-16T19:12:35.000Z] New client connected: 1GZO53pZXXjS6K59AAAL
+[2025-11-16T19:12:35.020Z] [join] socket:1GZO53pZXXjS6K59AAAL joined room:global as:John Paul
+[2025-11-16T19:17:45.397Z] New client connected: wc5-XAdpUOxV9IKHAAAN
+[2025-11-16T19:17:47.227Z] New client connected: OI9canFzXcFUr117AAAP
+[2025-11-16T19:17:47.249Z] New client connected: ZHuFhbPjHBuFqbw6AAAR
+[2025-11-16T19:17:47.291Z] [join] socket:OI9canFzXcFUr117AAAP joined room:global as:John Paul
+[2025-11-16T19:17:47.302Z] [join] socket:ZHuFhbPjHBuFqbw6AAAR joined room:global as:Ezra Sanga
+[2025-11-16T19:17:53.934Z] New client connected: JtTzTHaYA8zfiR5AAAAT
+[2025-11-16T19:17:53.991Z] [join] socket:JtTzTHaYA8zfiR5AAAAT joined room:global as:John Paul
+[2025-11-16T19:18:11.363Z] New client connected: x9SelNAOf8kjMwEyAAAV
+[2025-11-16T19:18:11.438Z] [join] socket:x9SelNAOf8kjMwEyAAAV joined room:global as:John Paul
+[2025-11-16T19:26:30.532Z] New client connected: yxXGBV5tC61JDWRUAAAX
+[2025-11-16T19:26:30.588Z] [join] socket:yxXGBV5tC61JDWRUAAAX joined room:global as:Ezra Sanga
+[2025-11-16T19:26:57.603Z] [private_message] from:Ezra Sanga toSocket:x9SelNAOf8kjMwEyAAAV id:691a258160b7e738873b3195
+[2025-11-16T19:27:21.153Z] [private_message] from:Ezra Sanga toSocket:yxXGBV5tC61JDWRUAAAX id:691a259960b7e738873b3ed1
+[2025-11-16T19:27:36.080Z] [private_message] from:Ezra Sanga toSocket:yxXGBV5tC61JDWRUAAAX id:691a25a860b7e738873b3ed3
+[2025-11-16T19:27:52.068Z] [private_message] from:Ezra Sanga toSocket:x9SelNAOf8kjMwEyAAAV id:691a25b860b7e738873b3ed5
+[2025-11-16T19:28:19.557Z] [private_message] from:Ezra Sanga toSocket:yxXGBV5tC61JDWRUAAAX id:691a25d360b7e738873b6eff
+[2025-11-16T19:28:28.242Z] [private_message] from:Ezra Sanga toSocket:x9SelNAOf8kjMwEyAAAV id:691a25dc60b7e738873b6f01
+[2025-11-16T19:28:44.923Z] [message] room:global from:John Paul id:691a25ec60b7e738873b9e81
+[2025-11-16T19:28:47.760Z] [message] room:global from:John Paul id:691a25ef60b7e738873ba34b
+[2025-11-16T19:28:55.871Z] [message] room:global from:John Paul id:691a25f760b7e738873bb11d
+[2025-11-16T19:29:02.364Z] [message] room:global from:John Paul id:691a25fe60b7e738873bbc66
+[2025-11-16T19:29:07.278Z] New client connected: 2VDfT5UG0YNHp73TAAAZ
+[2025-11-16T19:29:07.333Z] [join] socket:2VDfT5UG0YNHp73TAAAZ joined room:global as:John Paul
+[2025-11-16T19:29:12.357Z] New client connected: smraYnr8XvHAxweIAAAb
+[2025-11-16T19:29:12.415Z] [join] socket:smraYnr8XvHAxweIAAAb joined room:global as:John Paul
+[2025-11-16T19:29:16.733Z] New client connected: OnA-CyS8TXIZRidFAAAB
+[2025-11-16T19:29:16.783Z] New client connected: -1dg8VyQhH_SbS6lAAAD
+[2025-11-16T19:29:18.825Z] [message] room:global from:John Paul id:691a260e0117d830e3bd9910
+[2025-11-16T19:29:33.709Z] New client connected: brTts3gD28R4-yKjAAAC
+[2025-11-16T19:29:33.733Z] New client connected: iD4G-QS2ik2V4tAzAAAD
