@@ -621,3 +621,23 @@ function startServer(port, attemptsLeft) {
 }
 
 startServer(DEFAULT_PORT, MAX_PORT_TRIES);
+
+// Global error handlers to capture unexpected crashes and unhandled rejections
+process.on('uncaughtException', (err) => {
+  try {
+    console.error('Uncaught Exception:', err && (err.stack || err));
+    logToFile(`Uncaught Exception: ${err && (err.stack || err.message || err)}`);
+  } catch (e) {
+    console.error('Failed to write uncaughtException to log', e);
+  }
+  // keep process alive for debugging in dev; in production you might exit
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  try {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    logToFile(`Unhandled Rejection: ${reason && (reason.stack || reason.message || reason)}`);
+  } catch (e) {
+    console.error('Failed to write unhandledRejection to log', e);
+  }
+});

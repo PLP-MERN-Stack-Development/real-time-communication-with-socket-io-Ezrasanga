@@ -104,3 +104,130 @@
 [2025-11-16T19:29:18.825Z] [message] room:global from:John Paul id:691a260e0117d830e3bd9910
 [2025-11-16T19:29:33.709Z] New client connected: brTts3gD28R4-yKjAAAC
 [2025-11-16T19:29:33.733Z] New client connected: iD4G-QS2ik2V4tAzAAAD
+[2025-11-16T19:38:10.608Z] New client connected: E-jLobhL92OXImwkAAAF
+[2025-11-16T19:38:10.666Z] [join] socket:E-jLobhL92OXImwkAAAF joined room:global as:John Paul
+[2025-11-16T19:38:24.440Z] New client connected: jZE0lN5KAMFRTkeYAAAH
+[2025-11-16T19:38:24.516Z] [join] socket:jZE0lN5KAMFRTkeYAAAH joined room:global as:John Paul
+[2025-11-16T19:38:32.909Z] New client connected: Jbg_uYU3SJNu1T9OAAAJ
+[2025-11-16T19:38:32.974Z] [join] socket:Jbg_uYU3SJNu1T9OAAAJ joined room:global as:John Paul
+[2025-11-16T19:43:34.435Z] New client connected: CSrSBLvHkoGi5NKtAAAL
+[2025-11-16T19:43:34.492Z] [join] socket:CSrSBLvHkoGi5NKtAAAL joined room:global as:Ezra Kiplimo
+[2025-11-16T19:43:59.155Z] New client connected: OoWVD_uSZWgm2uSxAAAN
+[2025-11-16T19:43:59.197Z] [join] socket:OoWVD_uSZWgm2uSxAAAN joined room:global as:Ezra Sanga
+[2025-11-16T19:44:25.118Z] [message] room:global from:Ezra Kiplimo id:691a2999797853054a3f8284
+[2025-11-16T19:44:31.092Z] New client connected: UujVj7i2ctUPhdWbAAAP
+[2025-11-16T19:44:31.127Z] [join] socket:UujVj7i2ctUPhdWbAAAP joined room:global as:Ezra Kiplimo
+[2025-11-16T19:44:42.082Z] [message] room:global from:Ezra Kiplimo id:691a29aa797853054a3f828b
+[2025-11-16T19:44:55.273Z] New client connected: VLEt_wC0BhnPEmC0AAAR
+[2025-11-16T19:44:55.327Z] [join] socket:VLEt_wC0BhnPEmC0AAAR joined room:global as:Ezra Kiplimo
+[2025-11-16T19:45:14.406Z] [message] room:global from:Ezra Kiplimo id:691a29ca797853054a3f8292
+[2025-11-16T19:45:27.185Z] New client connected: PA8KA7UU5424rz9jAAAT
+[2025-11-16T19:45:27.234Z] [join] socket:PA8KA7UU5424rz9jAAAT joined room:global as:Ezra Kiplimo
+[2025-11-16T19:46:27.285Z] New client connected: KLeZqtNNZlYCGqFxAAAB
+[2025-11-16T19:46:27.403Z] New client connected: nBiWBwQMyGjrWLqxAAAD
+[2025-11-16T20:11:37.324Z] New client connected: ArKOqiZJ2bOMij3XAAAB
+[2025-11-16T20:11:37.399Z] [join] socket:ArKOqiZJ2bOMij3XAAAB joined room:global as:Ezra Kiplimo
+[2025-11-16T20:11:47.251Z] New client connected: 2eLRb_j66_HCcE8-AAAD
+[2025-11-16T20:11:47.268Z] [join] socket:2eLRb_j66_HCcE8-AAAD joined room:global as:Ezra Kiplimo
+[2025-11-16T20:11:53.775Z] New client connected: 2Xj7bLgjeT_3wU38AAAF
+[2025-11-16T20:11:53.817Z] [join] socket:2Xj7bLgjeT_3wU38AAAF joined room:global as:Ezra Kiplimo
+[2025-11-16T20:12:12.153Z] New client connected: NPE__k2BJkh5hgLoAAAH
+[2025-11-16T20:12:12.209Z] [join] socket:NPE__k2BJkh5hgLoAAAH joined room:global as:Ezra Kiplimo
+[2025-11-16T20:12:20.702Z] New client connected: QqaietBOj0RLHg-_AAAJ
+[2025-11-16T20:12:20.753Z] [join] socket:QqaietBOj0RLHg-_AAAJ joined room:global as:Ezra Sanga
+[2025-11-16T20:13:06.206Z] New client connected: MgezUoY4eG70LzqcAAAL
+[2025-11-16T20:13:06.265Z] [join] socket:MgezUoY4eG70LzqcAAAL joined room:global as:Ezra Sanga
+[2025-11-16T20:13:11.004Z] [message] room:global from:Ezra Sanga id:691a3056d0b9e1ad45869693
+[2025-11-16T20:13:30.673Z] New client connected: xdi33HJBKcy-_4SdAAAN
+[2025-11-16T20:13:30.740Z] [join] socket:xdi33HJBKcy-_4SdAAAN joined room:global as:Ezra Sanga
+[2025-11-16T20:14:38.680Z] [message] room:global from:Ezra Kiplimo id:691a30aed0b9e1ad4586969a
+[2025-11-16T20:14:42.818Z] New client connected: So1Et77NZywwtdBVAAAP
+[2025-11-16T20:14:42.873Z] [join] socket:So1Et77NZywwtdBVAAAP joined room:global as:Ezra Kiplimo
+[2025-11-16T20:14:53.623Z] New client connected: YxkBPWRwOyKv-eQxAAAR
+[2025-11-16T20:14:53.663Z] [join] socket:YxkBPWRwOyKv-eQxAAAR joined room:global as:Ezra Kiplimo
+[2025-11-17T14:47:18.518Z] New client connected: 1UfkJ1gJfhIWfsMdAAAU
+[2025-11-17T14:47:19.001Z] New client connected: teMgNB-L80nsHB5kAAAV
+[2025-11-17T15:59:35.834Z] New client connected: hXKX9HdgfqPBEUKxAAAX
+[2025-11-18T20:24:33.026Z] New client connected: buntT4M0NCLvJljpAAAB
+[2025-11-18T20:24:33.152Z] [join] socket:buntT4M0NCLvJljpAAAB joined room:global as:Ezra Sanga
+[2025-11-18T20:24:40.706Z] New client connected: TeBvEExirIK9TSPaAAAD
+[2025-11-18T20:24:40.743Z] [join] socket:TeBvEExirIK9TSPaAAAD joined room:global as:Ezra Sanga
+[2025-11-18T20:24:56.080Z] New client connected: k3gMhLF2NJtRVd1hAAAF
+[2025-11-18T20:24:56.121Z] [join] socket:k3gMhLF2NJtRVd1hAAAF joined room:global as:Ezra Kiplimo
+[2025-11-18T20:25:20.194Z] [message] room:global from:Ezra Kiplimo id:691cd630f1acfedd06381c96
+[2025-11-18T20:25:27.901Z] New client connected: i-eVyNS_afvYxHu2AAAH
+[2025-11-18T20:25:27.942Z] [join] socket:i-eVyNS_afvYxHu2AAAH joined room:global as:Ezra Kiplimo
+[2025-11-18T20:25:45.277Z] [message] room:global from:Ezra Kiplimo id:691cd649f1acfedd06381c9d
+[2025-11-18T20:25:53.031Z] New client connected: JgsmdtTOWEWusfwiAAAJ
+[2025-11-18T20:25:53.085Z] [join] socket:JgsmdtTOWEWusfwiAAAJ joined room:global as:Ezra Kiplimo
+[2025-11-18T20:30:35.643Z] New client connected: XCGPHjNxmrEV8ODtAAAL
+[2025-11-18T20:30:35.665Z] [join] socket:XCGPHjNxmrEV8ODtAAAL joined room:global as:Ezra Sanga
+[2025-11-18T20:30:36.695Z] New client connected: gDIfdb68TppLZKptAAAN
+[2025-11-18T20:30:36.729Z] [join] socket:gDIfdb68TppLZKptAAAN joined room:global as:Ezra Kiplimo
+[2025-11-18T20:30:43.035Z] New client connected: 7JclJVldLYZFbQBZAAAQ
+[2025-11-18T20:30:43.040Z] New client connected: FBgiONSPC-Qnp-xNAAAR
+[2025-11-18T20:30:43.548Z] [join] socket:FBgiONSPC-Qnp-xNAAAR joined room:global as:Ezra Kiplimo
+[2025-11-18T20:30:43.552Z] [join] socket:7JclJVldLYZFbQBZAAAQ joined room:global as:Ezra Sanga
+[2025-11-18T20:31:27.793Z] New client connected: BjH0jEwbQiYEM5IpAAAU
+[2025-11-18T20:31:27.796Z] New client connected: 863UPzH2aSOmjuwbAAAV
+[2025-11-18T20:31:29.649Z] [join] socket:BjH0jEwbQiYEM5IpAAAU joined room:global as:Ezra Kiplimo
+[2025-11-18T20:31:29.651Z] [join] socket:863UPzH2aSOmjuwbAAAV joined room:global as:Ezra Sanga
+[2025-11-18T20:31:51.414Z] New client connected: QZLB_jhtFl7mu01HAAAY
+[2025-11-18T20:31:51.417Z] New client connected: dkujZirbsPuooXgyAAAZ
+[2025-11-18T20:31:53.397Z] [join] socket:QZLB_jhtFl7mu01HAAAY joined room:global as:Ezra Sanga
+[2025-11-18T20:31:53.399Z] [join] socket:dkujZirbsPuooXgyAAAZ joined room:global as:Ezra Kiplimo
+[2025-11-18T20:32:16.594Z] New client connected: Pjk_N8isoRuAoEh7AAAc
+[2025-11-18T20:32:16.600Z] New client connected: G30SaVgfXN6enSBDAAAd
+[2025-11-18T20:32:17.074Z] [join] socket:G30SaVgfXN6enSBDAAAd joined room:global as:Ezra Kiplimo
+[2025-11-18T20:32:17.082Z] [join] socket:Pjk_N8isoRuAoEh7AAAc joined room:global as:Ezra Sanga
+[2025-11-18T20:32:19.727Z] New client connected: rHThJNaPPlt8aAipAAAg
+[2025-11-18T20:32:19.778Z] New client connected: 8sVbshCZUsMHekXHAAAh
+[2025-11-18T20:32:19.908Z] [join] socket:rHThJNaPPlt8aAipAAAg joined room:global as:Ezra Sanga
+[2025-11-18T20:32:19.957Z] [join] socket:8sVbshCZUsMHekXHAAAh joined room:global as:Ezra Kiplimo
+[2025-11-18T20:33:23.470Z] New client connected: eQ_JVVD2ZWPHBunlAAAk
+[2025-11-18T20:33:23.474Z] New client connected: 6P2D6jcdWRmWqzCEAAAl
+[2025-11-18T20:33:28.464Z] New client connected: 1EG2JlsQZ46I-RPDAAAo
+[2025-11-18T20:33:28.469Z] New client connected: gYdCfdpz-C6vaZnWAAAp
+[2025-11-18T20:33:37.853Z] [join] socket:gYdCfdpz-C6vaZnWAAAp joined room:global as:Ezra Kiplimo
+[2025-11-18T20:33:37.857Z] [join] socket:1EG2JlsQZ46I-RPDAAAo joined room:global as:Ezra Sanga
+[2025-11-18T20:34:12.885Z] New client connected: yXZswIvDeeqMxODjAAAu
+[2025-11-18T20:34:12.888Z] New client connected: SeWPc16jlYsm2iqmAAAv
+[2025-11-18T20:34:58.152Z] New client connected: ICiU5IaeNj1yhaLrAAAy
+[2025-11-18T20:34:58.158Z] New client connected: bWeUmXyjOPGkyCPJAAAz
+[2025-11-18T20:38:56.639Z] New client connected: CX5Q26mkC2bbfUtnAAAB
+[2025-11-18T20:38:56.727Z] [join] socket:CX5Q26mkC2bbfUtnAAAB joined room:global as:Ezra Sanga
+[2025-11-18T20:39:39.750Z] New client connected: -l1qo2gla1AJ3D5KAAAD
+[2025-11-18T20:39:42.610Z] New client connected: 9Pb6bBWfL8EMoc1zAAAF
+[2025-11-18T20:39:45.163Z] [join] socket:9Pb6bBWfL8EMoc1zAAAF joined room:global as:Ezra Kiplimo
+[2025-11-18T20:39:49.977Z] New client connected: 70lJIxjIYv14LFVMAAAH
+[2025-11-18T20:39:53.189Z] New client connected: BY1xRB3fggDXc43SAAAJ
+[2025-11-18T20:39:56.247Z] [join] socket:BY1xRB3fggDXc43SAAAJ joined room:global as:Ezra Kiplimo
+[2025-11-18T20:40:01.963Z] New client connected: TfS57lbcU1addcjKAAAL
+[2025-11-18T20:40:06.859Z] New client connected: vpej7mFQnX518VPbAAAN
+[2025-11-18T20:40:19.924Z] New client connected: UpazuzKA0aE-uHoXAAAP
+[2025-11-18T20:40:26.806Z] New client connected: HnoT41mqpLABO13dAAAR
+[2025-11-18T20:41:02.205Z] New client connected: _YB-qLrcZhvkEEoNAAAT
+[2025-11-18T20:41:13.666Z] New client connected: PzdIztCggRAoJ4YQAAAV
+[2025-11-18T20:41:17.545Z] New client connected: 2It1gl0Cy3Nyr-qIAAAX
+[2025-11-18T20:41:31.236Z] New client connected: ThhSA_YKzn9rRVGLAAAZ
+[2025-11-18T20:42:49.977Z] New client connected: tyehFpGusvisOoEqAAAB
+[2025-11-18T20:42:50.739Z] New client connected: rcf7p5qQjB0dOzgKAAAD
+[2025-11-18T20:42:50.822Z] [join] socket:rcf7p5qQjB0dOzgKAAAD joined room:global as:Ezra Sanga
+[2025-11-18T20:43:06.637Z] New client connected: GrNIPk6gQSlT91OMAAAC
+[2025-11-18T20:43:06.649Z] New client connected: uqcHCRf7LaEtJlu0AAAD
+[2025-11-18T20:43:23.240Z] New client connected: odlKgc-ieS7TCpgZAAAF
+[2025-11-18T20:43:23.321Z] [join] socket:odlKgc-ieS7TCpgZAAAF joined room:global as:Ezra Sanga
+[2025-11-18T20:44:26.408Z] New client connected: OiTeSnAiT6_mvXSxAAAH
+[2025-11-18T20:44:26.469Z] [join] socket:OiTeSnAiT6_mvXSxAAAH joined room:global as:Ezra Sanga
+[2025-11-18T20:44:35.540Z] [message] room:global from:Ezra Sanga id:691cdab3cfc41dd2070c9a8c
+[2025-11-18T20:44:41.230Z] New client connected: fSWDQm350sUvHzKzAAAJ
+[2025-11-18T20:44:41.281Z] [join] socket:fSWDQm350sUvHzKzAAAJ joined room:global as:Ezra Sanga
+[2025-11-18T20:44:50.355Z] New client connected: a674JTrgK4oIU50dAAAL
+[2025-11-18T20:44:50.417Z] [join] socket:a674JTrgK4oIU50dAAAL joined room:global as:Ezra Kiplimo
+[2025-11-18T20:45:05.831Z] [message] room:global from:Ezra Kiplimo id:691cdad1cfc41dd2070c9bab
+[2025-11-18T20:45:18.936Z] [message] room:global from:Ezra Kiplimo id:691cdadecfc41dd2070cb777
+[2025-11-18T20:45:53.856Z] [message] room:global from:Ezra Kiplimo id:691cdb01cfc41dd2070cfe2a
+[2025-11-18T20:46:13.058Z] [message] room:global from:Ezra Sanga id:691cdb15cfc41dd2070d2878
+[2025-11-18T20:46:30.449Z] New client connected: eBAWjomJoHPPtchkAAAN
+[2025-11-18T20:46:46.691Z] New client connected: gihOKAPXn67ep_TGAAAP
+[2025-11-18T20:46:46.748Z] [join] socket:gihOKAPXn67ep_TGAAAP joined room:global as:Ezra Sanga

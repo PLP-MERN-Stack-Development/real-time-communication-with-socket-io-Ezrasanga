@@ -37,7 +37,11 @@ export default function App() {
   const [rooms, setRooms] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [currentRoom, setCurrentRoom] = useState("global");
+  const [currentRoom, setCurrentRoom] = useState(() => {
+    try { return localStorage.getItem('currentRoom') || 'global'; } catch (e) { return 'global'; }
+  });
+  // track recently-deleted message ids locally to avoid re-adding from late server responses
+  const deletedMessageIds = useRef(new Set());
   const [input, setInput] = useState("");
   const [onlineCount, setOnlineCount] = useState(0); // new
 
@@ -103,36 +107,57 @@ export default function App() {
     s.on("recent_messages", (recent) => {
       if (!Array.isArray(recent)) return;
       setMessages((prev) => {
-        const map = new Map(prev.map((m) => [m.id, m]));
-        recent.forEach((m) => map.set(m.id, m));
-        return Array.from(map.values()).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+        const map = new Map(prev.map((m) => [m.id || m._id, m]));
+        recent.forEach((m) => {
+          const id = m._id || m.id;
+          if (id && deletedMessageIds.current.has(String(id))) return;
+          map.set(id, { ...m, id });
+        });
+        return Array.from(map.values()).sort((a, b) => (new Date(a.timestamp || a.createdAt || 0) - new Date(b.timestamp || b.createdAt || 0)));
       });
     });
     s.on("room_messages", ({ room, messages: roomMsgs }) => {
       if (!Array.isArray(roomMsgs)) return;
       setMessages((prev) => {
-        const map = new Map(prev.map((m) => [m.id, m]));
-        roomMsgs.forEach((m) => map.set(m.id, m));
-        return Array.from(map.values()).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+        const map = new Map(prev.map((m) => [m.id || m._id, m]));
+        roomMsgs.forEach((m) => {
+          const id = m._id || m.id;
+          if (id && deletedMessageIds.current.has(String(id))) return;
+          map.set(id, { ...m, id });
+        });
+        return Array.from(map.values()).sort((a, b) => (new Date(a.timestamp || a.createdAt || 0) - new Date(b.timestamp || b.createdAt || 0)));
       });
     });
     // server may emit `roomMessages` (camelCase)
     s.on('roomMessages', ({ room, messages: roomMsgs }) => {
       if (!Array.isArray(roomMsgs)) return;
       setMessages((prev) => {
-        const map = new Map(prev.map((m) => [m.id, m]));
-        roomMsgs.forEach((m) => map.set(m.id, m));
-        return Array.from(map.values()).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+        const map = new Map(prev.map((m) => [m.id || m._id, m]));
+        roomMsgs.forEach((m) => {
+          const id = m._id || m.id;
+          if (id && deletedMessageIds.current.has(String(id))) return;
+          map.set(id, { ...m, id });
+        });
+        return Array.from(map.values()).sort((a, b) => (new Date(a.timestamp || a.createdAt || 0) - new Date(b.timestamp || b.createdAt || 0)));
       });
     });
     s.on("message", (msg) => {
-      setMessages((prev) => {
-        if (prev.some((m) => m.id === msg.id)) return prev;
-        return [...prev, msg].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-      });
+      try {
+        const id = msg._id || msg.id;
+        if (id && deletedMessageIds.current.has(String(id))) return;
+        const normalized = { ...msg, id };
+        setMessages((prev) => {
+          if (prev.some((m) => String(m.id || m._id) === String(id))) return prev;
+          return [...prev, normalized].sort((a, b) => (new Date(a.timestamp || a.createdAt || 0) - new Date(b.timestamp || b.createdAt || 0)));
+        });
+      } catch (e) { /* ignore malformed message */ }
     });
     s.on('messageDeleted', ({ messageId }) => {
-      setMessages((prev) => prev.filter(m => (m.id || m._id) !== messageId));
+      try {
+        const idStr = String(messageId);
+        deletedMessageIds.current.add(idStr);
+        setMessages((prev) => prev.filter(m => String(m.id || m._id) !== idStr));
+      } catch (e) {}
     });
     s.on('roomCleared', ({ room }) => {
       setMessages((prev) => prev.filter(m => (m.room || 'global') !== room));
@@ -144,10 +169,16 @@ export default function App() {
     });
     // support either snake_case or camelCase private messages
     s.on("private_message", (msg) => {
-      setMessages((prev) => {
-        if (prev.some((m) => m.id === msg.id)) return prev;
-        return [...prev, { ...msg, private: true }].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-      });
+      try {
+        const id = msg._id || msg.id;
+        if (id && deletedMessageIds.current.has(String(id))) return;
+        const normalized = { ...msg, id, private: true };
+        setMessages((prev) => {
+          if (prev.some((m) => String(m.id || m._id) === String(id))) return prev;
+          return [...prev, normalized].sort((a, b) => (new Date(a.timestamp || a.createdAt || 0) - new Date(b.timestamp || b.createdAt || 0)));
+        });
+      } catch (e) {}
+      
       try {
         if (("Notification" in window) && Notification.permission === "granted") {
           new Notification(`PM from ${msg.senderName}`, { body: msg.text });
@@ -155,11 +186,15 @@ export default function App() {
       } catch {}
     });
     s.on('privateMessage', (msg) => {
-      setMessages((prev) => {
-        if (prev.some((m) => m.id === (msg._id || msg.id))) return prev;
-        const toInsert = { ...msg, id: msg._id || msg.id, private: true };
-        return [...prev, toInsert].sort((a, b) => (new Date(a.timestamp || a.createdAt || Date.now()) - new Date(b.timestamp || b.createdAt || Date.now())));
-      });
+      try {
+        const id = msg._id || msg.id;
+        if (id && deletedMessageIds.current.has(String(id))) return;
+        const toInsert = { ...msg, id, private: true };
+        setMessages((prev) => {
+          if (prev.some((m) => String(m.id || m._id) === String(id))) return prev;
+          return [...prev, toInsert].sort((a, b) => (new Date(a.timestamp || a.createdAt || Date.now()) - new Date(b.timestamp || b.createdAt || Date.now())));
+        });
+      } catch (e) {}
       try {
         const senderName = msg.from || msg.fromName || msg.senderName || 'Unknown';
         const senderSocket = msg.fromSocketId || null;
@@ -245,6 +280,11 @@ export default function App() {
     return () => { mounted = false; };
   }, [user, getToken, registerSocket /* intentionally not adding currentRoom to avoid re-init loops */]);
 
+  // clear locally-tracked deleted IDs when switching rooms so they don't block other rooms
+  useEffect(() => {
+    try { deletedMessageIds.current.clear(); } catch (e) {}
+  }, [currentRoom]);
+
   // derive visible messages for current room
   const [privateChatWith, setPrivateChatWith] = useState(null); // { id, name }
 
@@ -275,9 +315,14 @@ export default function App() {
         if (older.length === 0) setHasMoreOlder(false);
         // prepend older messages if not already present
         setMessages((prev) => {
-          const map = new Map(prev.map((m) => [m.id, m]));
-          older.forEach((m) => { if (!map.has(m.id)) map.set(m.id, m); });
-          return Array.from(map.values()).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+          const map = new Map(prev.map((m) => [m.id || m._id, m]));
+          older.forEach((m) => {
+            const id = m._id || m.id;
+            if (!id) return;
+            if (deletedMessageIds.current.has(String(id))) return;
+            if (!map.has(id)) map.set(id, { ...m, id });
+          });
+          return Array.from(map.values()).sort((a, b) => (new Date(a.timestamp || a.createdAt || 0) - new Date(b.timestamp || b.createdAt || 0)));
         });
         // adjust scroll to keep viewport stable
         try {
@@ -402,9 +447,11 @@ export default function App() {
       console.info("[app] create_room ack", res);
       if (!res) return alert("No response from server");
       if (!res.ok) return alert("Create room failed: " + (res.error || "unknown"));
-      // success: switch to the new room
+      // success: switch to the new room and persist
       setPrivateChatWith(null);
-      setCurrentRoom(res.room?.name || name);
+      const newRoomName = res.room?.name || name;
+      setCurrentRoom(newRoomName);
+      try { localStorage.setItem('currentRoom', newRoomName); } catch (e) {}
       // request fresh rooms snapshot
       try { s.emit("rooms_request", null); } catch (e) {}
     });
@@ -440,6 +487,7 @@ export default function App() {
       if (!res.ok) return alert("Join failed: " + (res.error || "unknown"));
       setPrivateChatWith(null);
       setCurrentRoom(room);
+      try { localStorage.setItem('currentRoom', room); } catch (e) {}
       // server will send room_messages via "room_messages" event — UI will receive them via registerSocket handlers
     });
   };
@@ -449,10 +497,14 @@ export default function App() {
     if (!room) return;
     const s = getSocket();
     try {
+      if (!confirm(`Leave room '${room}'? You can re-join later.`)) return;
       s && s.emit && s.emit('leave_room', { room }, (res) => {
         console.info('[app] leave_room ack', res);
       });
-      if (currentRoom === room) setCurrentRoom('global');
+      if (currentRoom === room) {
+        setCurrentRoom('global');
+        try { localStorage.setItem('currentRoom', 'global'); } catch (e) {}
+      }
     } catch (e) { console.warn('leaveRoom failed', e); }
   };
 
@@ -616,8 +668,11 @@ export default function App() {
                         <div style={{ fontWeight: 700 }}>{r.name}</div>
                         <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
                           <button className="btn btn-ghost btn--small" onClick={() => joinRoom(r.name)}>Join</button>
-                          <button className="btn btn-ghost btn--small" onClick={() => { const s = getSocket(); s && s.emit && s.emit('clearRoom', { room: r.name }, (ack) => { if (!ack || !ack.ok) console.warn('clearRoom failed', ack); }); }}>Clear</button>
-                          <button className="btn btn-ghost btn--small" onClick={() => { const s = getSocket(); s && s.emit && s.emit('deleteRoom', { room: r.name }, (ack) => { if (!ack || !ack.ok) return alert('Delete failed: ' + (ack?.error||'unknown')); try { s.emit('rooms_request'); } catch {} }); }}>Delete</button>
+                          <button className="btn btn-ghost btn--small" onClick={() => { if (!confirm(`Clear all messages in '${r.name}'? This cannot be undone.`)) return; const s = getSocket(); s && s.emit && s.emit('clearRoom', { room: r.name }, (ack) => { if (!ack || !ack.ok) console.warn('clearRoom failed', ack); }); }}>Clear</button>
+                          <button className="btn btn-ghost btn--small" onClick={() => {
+                            if (!confirm(`Delete room '${r.name}'? This will remove all messages.`)) return;
+                            const s = getSocket(); s && s.emit && s.emit('deleteRoom', { room: r.name }, (ack) => { if (!ack || !ack.ok) return alert('Delete failed: ' + (ack?.error||'unknown')); try { s.emit('rooms_request'); } catch {} });
+                          }}>Delete</button>
                           {currentRoom === r.name && r.name !== "global" && <button className="btn btn-outline btn--small" onClick={() => leaveRoom(r.name)}>Leave</button>}
                         </div>
                       </div>
@@ -681,10 +736,10 @@ export default function App() {
                     {visibleMessages.length === 0 ? (
                       <div className="empty">No messages yet</div>
                     ) : (
-                      visibleMessages.map((m) => {
+                      visibleMessages.map((m, i) => {
                         const sent = m.senderId === user?.id || m.senderId === user?.userId;
                         return (
-                          <div key={m.id || Math.random()} className={`message-bubble ${sent ? "message-sent" : "message-recv"}`} style={{ marginBottom: 10 }}>
+                          <div key={m.id || m._id || `${m.timestamp || Date.now()}-${i}`} className={`message-bubble ${sent ? "message-sent" : "message-recv"}`} style={{ marginBottom: 10 }}>
                             <div className="message-meta">
                               <div style={{ fontWeight: 700 }}>{m.senderName || m.from}</div>
                               <div>{m.timestamp ? new Date(m.timestamp).toLocaleTimeString() : ""}</div>
